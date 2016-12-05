@@ -85,7 +85,8 @@ class project_task(osv.Model):
 
         for record in self.browse(cr, uid, ids, context=context):
             for predecessor in record.predecessor_ids:
-                if predecessor.state != 'done':
+                # if predecessor.state != 'done':
+                if predecessor.stage_id.type != 'done':
                     raise osv.except_osv(_('Warning!'), _("Please complete  \
                         the predecessor task %s in order to close this tasks." % predecessor.name))
         return super(project_task, self).action_close(cr, uid, ids, context)
@@ -118,7 +119,8 @@ class project_task(osv.Model):
     def compute_date_compare(self, cr, uid, predecessor, context=None):
         _logger = logging.getLogger(__name__)
         res = ''
-        if predecessor.state != 'cancelled':
+        # if predecessor.state != 'cancelled':
+        if predecessor.stage_id.type != 'cancelled':
             _logger.debug('FGF compute date %s,%s,%s' % (predecessor.name, predecessor.date_end, predecessor.date_deadline)   )
             res = predecessor.date_end or predecessor.date_deadline
         elif predecessor.predecessor_ids:
@@ -166,7 +168,8 @@ class project_task(osv.Model):
                 _logger.debug('FGF successors %s' % (task.successor_ids)   )
                 for successor in task.successor_ids:
                     _logger.debug('FGF successor %s' % (successor.id)   )
-                    if successor.state not in ('done'):
+                    # if successor.state not in ('done'):
+                    if successor.stage_id.type != 'done':
                         dates = self.compute_earliest_start(cr, uid, successor.id, context)
                         if dates:
                             self.write(cr, uid, [successor.id], {'date_start': dates[0], 'date_end': dates[1]})
@@ -186,6 +189,7 @@ class project_task(osv.Model):
         return
                  
     def create(self, cr, uid, vals, context=None) :
+        vals['color'] = 4
         if vals.get('duration') and vals['duration']:
             vals['duration_helper'] = vals['duration']
         res = super(project_task, self).create(cr, uid, vals, context=context)
@@ -193,6 +197,8 @@ class project_task(osv.Model):
         return res
 
     def write(self, cr, uid, ids, vals, context=None) :
+        if not 'color' in vals:
+            vals['color'] = 4
         _logger = logging.getLogger(__name__)
         if vals.get('duration') and vals['duration']:
             vals['duration_helper'] = vals['duration']
@@ -211,3 +217,11 @@ class project_task(osv.Model):
         return res
 
 # end project_task
+
+
+class project_task_type(osv.Model):
+    _inherit = 'project.task.type'
+
+    _columns = {
+        'type': fields.selection([('cancelled', 'Cancelled'), ('done', 'Done')], string='Stage type'),
+    }
