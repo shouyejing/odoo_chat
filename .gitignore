@@ -1,5 +1,6 @@
 #ignore config file
 /.arcconfig
+
 # sphinx build directories
 _build/
 
