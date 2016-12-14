@@ -304,6 +304,7 @@ class SMSClient(orm.Model):
         sids = queue_obj.search(cr, uid, [
                 ('state', '!=', 'send'),
                 ('state', '!=', 'sending'),
+                ('state', '!=', 'error'),
                 ('type', '=', queue_type)
             ], limit=1000, context=context)
 
