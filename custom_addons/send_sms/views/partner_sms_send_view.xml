@@ -58,7 +58,8 @@
             target="new"
             key2="client_action_multi"
             groups="group_sms_user"
-            id="action_partner_sms_send"/>
+            id="action_partner_sms_send"
+	   		view_id="view_partner_sms_send" />
             
        <!-- Inherit Partner Form -->
        

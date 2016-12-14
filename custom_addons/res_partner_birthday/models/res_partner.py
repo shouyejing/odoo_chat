@@ -1,11 +1,25 @@
 # -*- coding: utf-8 -*-
-# © 2015 Antiun Ingeniería S.L. - Jairo Llopis
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+# © 2016 Minh.ld
 
 from openerp import fields, models
 
 
-class ProjectProject(models.Model):
-    _inherit = "project.project"
+class PartnerBirthday(models.Model):
+    _inherit = "res.partner"
 
-    description = fields.Html()
+    birthday = fields.Date(string='Birthday')
+
+
+class PartnerCard(models.Model):
+    _name = 'res.partner.card'
+
+    code = fields.Char('Code')
+    name = fields.Char('Name')
+    type = fields.Selection([('Employee', 'Employee'), ('Green', 'Green'), ('Gold', 'Gold')])
+    point = fields.Float('Point')
+
+
+class Partner(models.Model):
+    _inherit = 'res.partner'
+
+    partner_card_id = fields.Many2one('res.partner.card', string='Card')

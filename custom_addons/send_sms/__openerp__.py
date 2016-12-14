@@ -28,7 +28,8 @@
         "data/smsclient_data.xml",
         "wizard/mass_sms_view.xml",
         "views/partner_sms_send_view.xml",
-        "views/smstemplate_view.xml"                                         
+        "views/smstemplate_view.xml",
+        "views/manual_send_sms_view.xml"
     ],
     'installable': True,
     'application': False,
