@@ -238,21 +238,21 @@ class SMSClient(orm.Model):
             mobile = data.mobile_to.replace(".","")
             mobile = mobile.replace(" ","")
             mobile = mobile.replace("-","")
-            if gateway.method == 'http':
-                prms = {}
-                for p in data.gateway.property_ids:                    
-                    if p.type == 'user':                        
-                        prms[p.name] = p.value
-                    elif p.type == 'password':
-                        prms[p.name] = p.value
-                    elif p.type == 'to':
-                        prms[p.name] = mobile
-                    elif p.type == 'sms':
-                        prms[p.name] = unicode(data.text).encode('utf-8')
-                    elif p.type == 'extra':
-                        prms[p.name] = p.value
-                params = urllib.urlencode(prms)
-                name = url + "?" + params
+            # if gateway.method == 'http':
+            #     prms = {}
+            #     for p in data.gateway.property_ids:
+            #         if p.type == 'user':
+            #             prms[p.name] = p.value
+            #         elif p.type == 'password':
+            #             prms[p.name] = p.value
+            #         elif p.type == 'to':
+            #             prms[p.name] = mobile
+            #         elif p.type == 'sms':
+            #             prms[p.name] = unicode(data.text).encode('utf-8')
+            #         elif p.type == 'extra':
+            #             prms[p.name] = p.value
+            #     params = urllib.urlencode(prms)
+            #     name = url + "?" + params
             queue_obj = self.pool.get('sms.smsclient.queue')
             vals = self._prepare_smsclient_queue(cr, uid, partner_id, data, name, context=context)
             queue_obj.create(cr, uid, vals, context=context)
@@ -267,7 +267,7 @@ class SMSClient(orm.Model):
                 ('state', '!=', 'send'),
                 ('state', '!=', 'sending')
             ], limit=30, context=context)
-        queue_obj.write(cr, uid, sids, {'state': 'sending'}, context=context)
+
         error_ids = []
         sent_ids = []
         res = ""
@@ -277,9 +277,34 @@ class SMSClient(orm.Model):
                     error_ids.append(sms.id)
                     continue
             if sms.gateway_id.method == 'http':
+                # method http get
+                # try:
+                #     response = urllib.urlopen(sms.name)
+                #     res = response.read()
+                # except Exception, e:
+                #     continue
+                api_key = ''
+                api_secret = ''
+                brandname = ''
+                for p in sms.gateway_id.property_ids:
+                    if p.name == 'api_key':
+                        api_key = p.value
+                    elif p.name == 'api_secret':
+                        api_secret = p.value
+                    elif p.name == 'brandname':
+                        brandname = p.value
+
                 try:
-                    response = urllib.urlopen(sms.name)
-                    res = response.read()                    
+                    import requests
+                    import json
+                    data = {"submission": {"api_key": api_key or '', "api_secret": api_secret or '',
+                                           "sms": [{"brandname": brandname or '', "text": unicode(sms.msg).encode('utf-8'), "to": sms.mobile}]}}
+                    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+                    result = requests.post(sms.gateway_id.url, data=json.dumps(data), headers=headers)
+                    queue_obj.write(cr, uid, sms.id, {'state': 'sending'}, context=context)
+                    if result.status_code == 200 and result.json() and result.json()['submission']['sms'][0]['status'] == 0:
+                        queue_obj.write(cr, uid, sent_ids, {'state': 'send'}, context=context)
+                    print result
                 except Exception, e:
                     continue
                     #raise orm.except_orm('Error', sms.name)
@@ -318,7 +343,7 @@ class SMSClient(orm.Model):
                             'partner_id': sms.partner_id.id,
                         }, context=context)
             sent_ids.append(sms.id)
-        queue_obj.write(cr, uid, sent_ids, {'state': 'send'}, context=context)
+        # queue_obj.write(cr, uid, sent_ids, {'state': 'send'}, context=context)
         queue_obj.write(cr, uid, error_ids, {
                                         'state': 'error',
                                         'error': 'Size of SMS should not be more then 160 char'
@@ -344,7 +369,7 @@ class SMSQueue(orm.Model):
             states={'draft': [('readonly', False)]}),
         'state': fields.selection([
             ('draft', 'Queued'),
-            ('sending', 'Waiting'),
+            ('sending', 'Sending'),
             ('send', 'Sent'),
             ('error', 'Error'),
         ], 'Message Status', select=True, readonly=True),
