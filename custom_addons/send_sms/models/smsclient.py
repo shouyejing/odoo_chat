@@ -24,6 +24,7 @@
 import urllib
 from openerp.osv import fields, orm
 from openerp.tools.translate import _
+from openerp.exceptions import UserError
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -128,8 +129,16 @@ class partner_sms_send(orm.Model):
         'mobile_to': _default_get_mobile,
         'gateway': _default_get_gateway,        
     }
+
+    def validate(self, data):
+        if data.text and len(data.text) > 160:
+            raise UserError(_("Message length not exceeding 160 characters"))
+        if not data.gateway:
+            raise UserError(_('No Gateway Found'))
+        else:
+            return True
     
-    def sms_send(self, cr, uid, ids, context=None):        
+    def sms_send(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
         active_id = context.get('active_id', False)
@@ -137,9 +146,7 @@ class partner_sms_send(orm.Model):
             raise orm.except_orm(_('Error'), _('No Partner Found'))
         client_obj = self.pool.get('sms.smsclient')
         for data in self.browse(cr, uid, ids, context=context):
-            if not data.gateway:
-                raise orm.except_orm(_('Error'), _('No Gateway Found'))
-            else:
+            if self.validate(data):
                 client_obj._send_message(cr, uid, active_id, data, context=context)
         return {}
 
@@ -148,9 +155,7 @@ class partner_sms_send(orm.Model):
             context = {}
         client_obj = self.pool.get('sms.smsclient')
         data = self.browse(cr, uid, ids, context=context)
-        if not data.gateway:
-            raise orm.except_orm(_('Error'), _('No Gateway Found'))
-        else:
+        if self.validate(data):
             # partner_obj = self.pool.get('res.partner')
             condition = ''
             if data.month_birthday and data.month_birthday != 0:
@@ -160,11 +165,12 @@ class partner_sms_send(orm.Model):
             if data.state_ids:
                 condition += " AND res_partner.state_id in {0}".format(tuple(data.state_ids.ids))
 
-            sql = """SELECT res_partner.id, mobile FROM res_partner INNER JOIN
-                                      res_partner_card on res_partner.partner_card_id = res_partner_card.id
-                                      WHERE active=True AND
-                                      customer=True AND
-                                      mobile is not null {0}""".format(condition)
+            sql = """SELECT res_partner.id, mobile
+                      FROM res_partner INNER JOIN
+                      res_partner_card ON res_partner.partner_card_id = res_partner_card.id
+                      WHERE active=True AND
+                            customer=True AND
+                            mobile is not null {0}""".format(condition)
             cr.execute(sql)
             list_partner = cr.fetchall()
             # list_partner_id = partner_obj.search(cr, uid, [('active', '=', True), ('mobile', '!=', None), ('customer', '=', True)])
@@ -273,9 +279,13 @@ class SMSClient(orm.Model):
                 raise orm.except_orm(_('Permission Error!'), _('You have no permission to access %s ') % (gateway.name,))
             url = gateway.url
             name = url
-            mobile = data.mobile_to.replace(".","")
-            mobile = mobile.replace(" ","")
-            mobile = mobile.replace("-","")
+            mobile = data.mobile_to.replace(".", "")
+            mobile = mobile.replace(" ", "")
+            mobile = mobile.replace("-", "")
+            mobile = mobile.replace("+", "")
+            if mobile.isdigit() and len(mobile) >= 10:
+                if mobile[:2] != '84':
+                    mobile = '84' + mobile[1:]
             if gateway.method == 'http':
                 prms = {}
                 for p in data.gateway.property_ids:
@@ -321,7 +331,12 @@ class SMSClient(orm.Model):
                 try:
                     response = urllib.urlopen(sms.name)
                     res = response.read()
+                    if res > 0:
+                        queue_obj.write(cr, uid, sms.id, {'state': 'send'}, context=context)
+                    else:
+                        queue_obj.write(cr, uid, sms.id, {'state': 'error', 'error': res}, context=context)
                 except Exception, e:
+                    error_ids.append(sms.id)
                     continue
             if sms.gateway_id.method == 'http_post':
                 api_key = ''
@@ -346,7 +361,7 @@ class SMSClient(orm.Model):
                         if result.json()['submission']['sms'][0]['status'] == 0:
                             queue_obj.write(cr, uid, sms.id, {'state': 'send'}, context=context)
                         else:
-                            queue_obj.write(cr, uid, sms.id, {'state': 'error', 'error_code': result.json()['submission']['sms'][0]['status']}, context=context)
+                            queue_obj.write(cr, uid, sms.id, {'state': 'error', 'error': result.json()['submission']['sms'][0]['status']}, context=context)
                     else:
                         error_ids.append(sms.id)
                 except Exception, e:
@@ -389,10 +404,7 @@ class SMSClient(orm.Model):
                         }, context=context)
             # sent_ids.append(sms.id)
         # queue_obj.write(cr, uid, sent_ids, {'state': 'send'}, context=context)
-        queue_obj.write(cr, uid, error_ids, {
-                                        'state': 'error',
-                                        'error': 'Size of SMS should not be more then 160 char'
-                                    }, context=context)
+        queue_obj.write(cr, uid, error_ids, {'state': 'error'}, context=context)
         return True
 
 class SMSQueue(orm.Model):
@@ -449,8 +461,7 @@ class SMSQueue(orm.Model):
         'type': fields.selection([
             ('immediate', 'Immediate'),
             ('birthday', 'Birthday'),
-            ('manual', 'Manual')], select=True, readonly=True),
-        'error_code': fields.char('Error code')  # lay tu doi tac tra ve
+            ('manual', 'Manual')], select=True, readonly=True)
     }
     _defaults = {
         'date_create': fields.datetime.now,
