@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record model="ir.actions.act_window" id="cate_action">
+        <field name="name">Cate</field>
+        <field name="res_model">design.cate</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first cate
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="product_style_action">
+        <field name="name">Product Option Style</field>
+        <field name="res_model">product.option.style</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first style
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="product_form_action">
+        <field name="name">Product Form</field>
+        <field name="res_model">product.form</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first form
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="material_group_action">
+        <field name="name">Material Group</field>
+        <field name="res_model">material.group</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first material group
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="material_action">
+        <field name="name">Material</field>
+        <field name="res_model">material</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first material
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="product_function_action">
+        <field name="name">Function</field>
+        <field name="res_model">product.function</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first function
+            </p>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="pattern_action">
+        <field name="name">Pattern</field>
+        <field name="res_model">pattern</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first pattern
+            </p>
+        </field>
+    </record>
+
+
+    <record id="product_template_form_option_view" model="ir.ui.view">
+        <field name="name">product.template.common.option.form</field>
+        <field name="model">product.template</field>
+        <field name="mode">primary</field>
+        <field name="priority" eval="1" />
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales']" position="after">
+                <page string="Product option" name="product_option">
+                    <group name="All Option">
+                        <field name="design_cate"/>
+                        <field name="style"/>
+                        <field name="form"/>
+                        <field name="material"/>
+                        <field name="function"/>
+                        <field name="pattern"/>
+                    </group>
+                 </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <menuitem name="Product Option" id="product_option_detail" sequence="3" />
+    <menuitem name="Cate" id="product_design_cate" sequence="1" parent="product_option_detail" action="cate_action" />
+    <menuitem name="Style" id="product_style" sequence="2" parent="product_option_detail" action="product_style_action" />
+    <menuitem name="Form" id="product_form" sequence="3" parent="product_option_detail" action="product_form_action" />
+    <menuitem name="Material Group" id="material_group" sequence="4" parent="product_option_detail" action="material_group_action" />
+    <menuitem name="Material" id="product_material" sequence="5" parent="product_option_detail" action="material_action" />
+    <menuitem name="Function" id="product_function" sequence="6" parent="product_option_detail" action="product_function_action" />
+    <menuitem name="Pattern" id="product_pattern" sequence="7" parent="product_option_detail" action="pattern_action" />
+</odoo>
