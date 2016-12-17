@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_design_cate_user,design.cate,model_design_cate,stock.group_stock_user,1,0,0,0
+access_design_cate_manager,design.cate,model_design_cate,stock.group_stock_manager,1,1,1,1
+access_product_option_style_user,product.option.style,model_product_option_style,stock.group_stock_user,1,0,0,0
+access_product_option_style_manager,product.option.style,model_product_option_style,stock.group_stock_manager,1,1,1,1
+access_product_form_user,product.form,model_product_form,stock.group_stock_user,1,0,0,0
+access_product_form_manager,product.form,model_product_form,stock.group_stock_manager,1,1,1,1
+access_material_group_user,material.group,model_material_group,stock.group_stock_user,1,0,0,0
+access_material_group_manager,material.group,model_material_group,stock.group_stock_manager,1,1,1,1
+access_material_user,material,model_material,stock.group_stock_user,1,0,0,0
+access_material_manager,material,model_material,stock.group_stock_manager,1,1,1,1
+access_product_function_user,product.function,model_product_function,stock.group_stock_user,1,0,0,0
+access_product_function_manager,product.function,model_product_function,stock.group_stock_manager,1,1,1,1
+access_pattern_user,pattern,model_pattern,stock.group_stock_user,1,0,0,0
+access_pattern_manager,pattern,model_pattern,stock.group_stock_manager,1,1,1,1

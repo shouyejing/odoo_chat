@@ -102,12 +102,12 @@
     </record>
 
 
-    <menuitem name="Product Option" id="product_option_detail" sequence="3" />
-    <menuitem name="Cate" id="product_design_cate" sequence="1" parent="product_option_detail" action="cate_action" />
-    <menuitem name="Style" id="product_style" sequence="2" parent="product_option_detail" action="product_style_action" />
-    <menuitem name="Form" id="product_form" sequence="3" parent="product_option_detail" action="product_form_action" />
-    <menuitem name="Material Group" id="material_group" sequence="4" parent="product_option_detail" action="material_group_action" />
-    <menuitem name="Material" id="product_material" sequence="5" parent="product_option_detail" action="material_action" />
-    <menuitem name="Function" id="product_function" sequence="6" parent="product_option_detail" action="product_function_action" />
-    <menuitem name="Pattern" id="product_pattern" sequence="7" parent="product_option_detail" action="pattern_action" />
+    <menuitem name="Product Option" id="product_option_detail" sequence="3" groups="stock.group_stock_manager,stock.group_stock_user" />
+    <menuitem name="Cate" id="product_design_cate" sequence="1" parent="product_option_detail" action="cate_action" groups="stock.group_stock_manager,stock.group_stock_user" />
+    <menuitem name="Style" id="product_style" sequence="2" parent="product_option_detail" action="product_style_action" groups="stock.group_stock_manager,stock.group_stock_user" />
+    <menuitem name="Form" id="product_form" sequence="3" parent="product_option_detail" action="product_form_action" groups="stock.group_stock_manager,stock.group_stock_user" />
+    <menuitem name="Material Group" id="material_group" sequence="4" parent="product_option_detail" action="material_group_action" groups="stock.group_stock_manager,stock.group_stock_user" />
+    <menuitem name="Material" id="product_material" sequence="5" parent="product_option_detail" action="material_action" groups="stock.group_stock_manager,stock.group_stock_user" />
+    <menuitem name="Function" id="product_function" sequence="6" parent="product_option_detail" action="product_function_action" groups="stock.group_stock_manager,stock.group_stock_user" />
+    <menuitem name="Pattern" id="product_pattern" sequence="7" parent="product_option_detail" action="pattern_action" groups="stock.group_stock_manager,stock.group_stock_user" />
 </odoo>

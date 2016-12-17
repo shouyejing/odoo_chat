@@ -15,5 +15,6 @@
     ],
     "data": [
         "views/product_option.xml",
+        "security/ir.model.access.csv"
     ],
 }
