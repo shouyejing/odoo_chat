@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="email_template_task_reminder" model="mail.template">
+            <field name="name">Task reminder</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="email_from">${(user.email)|safe}</field>
+            <field name="email_to">${(object.email)}</field>
+            <field name="subject">Task reminder!!!</field>
+                <field name="body_html"><![CDATA[
+                <p> Nhiệm vụ của bạn đã đến hạn. Vui lòng cập nhật thông tin, trạng thái <a href='@@link@@' title='View Task' alt='View Task'>tại đây</a> !</p>
+            ]]>
+            </field>
+        </record>
+
+
+        <record forcecreate="True" id="ir_cron_birth" model="ir.cron">
+            <field name="name">Task reminder scheduler</field>
+            <field eval="True" name="active"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'res.partner'" name="model"/>
+            <field eval="'reminder_project_task'" name="function"/>
+            <field eval="'()'" name="args"/>
+        </record>
+    </data>
+</openerp>
