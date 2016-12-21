@@ -6,8 +6,8 @@
     "images": ['images/gantt_view.png'],
     "version": "1.0.0",
 
-    "author": "IT-Projects LLC, Pavel Romanchenko",
-    "website": "https://it-projects.info",
+    "author": "",
+    "website": "",
     "license": "AGPL-3",
     "price": 160.00,
     "currency": "EUR",
