@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2016
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# © 2016 Minh.ld
 {
     "name": "Project task reminder",
     "summary": "Send mail when project task expired",
