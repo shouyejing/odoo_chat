@@ -2,7 +2,7 @@
 <openerp>
     <data>
     
-        <menuitem name="SMS Gateway" id="menu_smsclient_administration_server" parent="base.menu_config"/>
+        <menuitem name="SMS Gateway" id="menu_smsclient_administration_server" parent="base.menu_custom"/>
         
         <!-- SMS Gateway list -->
         
