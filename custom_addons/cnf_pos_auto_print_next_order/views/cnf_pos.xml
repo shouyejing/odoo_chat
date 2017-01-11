@@ -3,9 +3,9 @@
 -->
 <openerp>
     <data>
-         <template id="canifa_point_of_sale_inherit_assets" inherit_id="point_of_sale.assets">
+         <template id="cnf_pos_auto_print_next_order_inherit_assets" inherit_id="point_of_sale.assets">
               <xpath expr="." position="inside">
-                <script type="text/javascript" src="/cnf_point_of_sale/static/src/js/screen.js" charset="utf-8"></script>
+                <script type="text/javascript" src="/cnf_pos_auto_print_next_order/static/src/js/screen.js" charset="utf-8"></script>
               </xpath>
         </template>
     </data>
