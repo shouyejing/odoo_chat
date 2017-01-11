@@ -11,7 +11,7 @@ odoo.define('hss_point_of_sale.screen', function (require) {
     var Model = require('web.DataModel');
 
     var screens_req = require('point_of_sale.screens');
-    var _super_ReceiptScreen = screens_req.ReceiptScreenWidget.prototype;
+    // var _super_ReceiptScreen = screens_req.ReceiptScreenWidget.prototype;
 
 
     screens_req.ReceiptScreenWidget.include({
