@@ -4,10 +4,10 @@
 
 odoo.define('cnf_point_of_sale.screen', function (require) {
 "use strict";
-    var core = require('web.core');
+    // var core = require('web.core');
     // var QWeb = core.qweb;
     // var _t = core._t;
-    var gui = require('point_of_sale.gui');
+    // var gui = require('point_of_sale.gui');
     // var Model = require('web.DataModel');
 
     var screens_req = require('point_of_sale.screens');
