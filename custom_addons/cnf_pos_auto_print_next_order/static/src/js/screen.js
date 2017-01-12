@@ -5,10 +5,10 @@
 odoo.define('hss_point_of_sale.screen', function (require) {
 "use strict";
     var core = require('web.core');
-    var QWeb = core.qweb;
-    var _t = core._t;
+    // var QWeb = core.qweb;
+    // var _t = core._t;
     var gui = require('point_of_sale.gui');
-    var Model = require('web.DataModel');
+    // var Model = require('web.DataModel');
 
     var screens_req = require('point_of_sale.screens');
     // var _super_ReceiptScreen = screens_req.ReceiptScreenWidget.prototype;
