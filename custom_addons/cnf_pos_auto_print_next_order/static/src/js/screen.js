@@ -17,10 +17,10 @@ odoo.define('hss_point_of_sale.screen', function (require) {
     screens_req.ReceiptScreenWidget.include({
         show: function(){
             this._super();
-            var self = this;
+            // var self = this;
 
-            this.render_change();
-            this.render_receipt();
+            // this.render_change();
+            // this.render_receipt();
 
             // if (this.should_auto_print()) {
             //     this.print();
