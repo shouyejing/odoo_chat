@@ -2,13 +2,13 @@
  * author: minhld
  */
 
-odoo.define('hss_point_of_sale.screen', function (require) {
+odoo.define('cnf_point_of_sale.screen', function (require) {
 "use strict";
-    var core = require('web.core');
-    var QWeb = core.qweb;
-    var _t = core._t;
-    var gui = require('point_of_sale.gui');
-    var Model = require('web.DataModel');
+    // var core = require('web.core');
+    // var QWeb = core.qweb;
+    // var _t = core._t;
+    // var gui = require('point_of_sale.gui');
+    // var Model = require('web.DataModel');
 
     var screens_req = require('point_of_sale.screens');
     // var _super_ReceiptScreen = screens_req.ReceiptScreenWidget.prototype;
@@ -17,10 +17,10 @@ odoo.define('hss_point_of_sale.screen', function (require) {
     screens_req.ReceiptScreenWidget.include({
         show: function(){
             this._super();
-            var self = this;
+            // var self = this;
 
-            this.render_change();
-            this.render_receipt();
+            // this.render_change();
+            // this.render_receipt();
 
             // if (this.should_auto_print()) {
             //     this.print();
@@ -30,7 +30,7 @@ odoo.define('hss_point_of_sale.screen', function (require) {
             // } else {
             //     this.lock_screen(false);
             // }
-
+            // call print immediate
             this.print();
             this.$('.next').click();
 
