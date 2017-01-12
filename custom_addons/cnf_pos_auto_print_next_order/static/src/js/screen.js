@@ -2,7 +2,7 @@
  * author: minhld
  */
 
-odoo.define('hss_point_of_sale.screen', function (require) {
+odoo.define('cnf_point_of_sale.screen', function (require) {
 "use strict";
     var core = require('web.core');
     // var QWeb = core.qweb;
