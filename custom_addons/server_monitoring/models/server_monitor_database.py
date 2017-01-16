@@ -48,9 +48,9 @@ class ModelRowCount(models.Model):
 class ModelTableSize(models.Model):
     _name = 'server.monitor.model.table.size'
 
-    name = fields.Text('Table name', readonly=True)
+    name = fields.Char('Table name', readonly=True)
     size = fields.Bigint('Size (bytes)', readonly=True)
-    hsize = fields.Text('Size', readonly=True)
+    hsize = fields.Char('Size', readonly=True)
     measure_id = fields.Many2one('server.monitor.database',
                                       'Measure',
                                       ondelete='cascade', readonly=True)
@@ -63,7 +63,7 @@ class ModelTableSize(models.Model):
 class ModelTableActivityRead(models.Model):
     _name = 'server.monitor.model.table.activity.read'
 
-    name = fields.Text('Table name')
+    name = fields.Char('Table name')
     disk_reads = fields.Bigint('Disk reads (heap blocks)', readonly=True)
     cache_reads = fields.Bigint('Cache reads', readonly=True)
     total_reads = fields.Bigint('Total reads', readonly=True)
@@ -79,7 +79,7 @@ class ModelTableActivityRead(models.Model):
 class ModelTableActivityUpdate(models.Model):
     _name = 'server.monitor.model.table.activity.update'
 
-    name = fields.Text('Table name', readonly=True)
+    name = fields.Char('Table name', readonly=True)
     seq_scan = fields.Bigint('Seq scans', readonly=True)
     idx_scan = fields.Bigint('Idx scans', readonly=True)
     lines_read_total = fields.Bigint('Tot lines read', readonly=True)
@@ -163,7 +163,7 @@ class ServerMonitorDatabase(models.Model):
         return res
 
     name = fields.Datetime('Timestamp', readonly=True, default=fields.Datetime.now)
-    info = fields.Text('Information')
+    info = fields.Char('Information')
     table_nb_row_ids = fields.One2many('server.monitor.model.row.count',
                                             'measure_id',
                                             'Model row counts',

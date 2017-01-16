@@ -166,6 +166,7 @@ class ServerMonitorProcess(models.Model):
     @api.model
     def _class_count(self):
         counts = {}
+        context = self.env.context
         if context.get('_x_no_class_count'):
             return []
         if context.get('_x_no_gc_collect'):
@@ -197,20 +198,20 @@ class ServerMonitorProcess(models.Model):
             info.append({'name': name,  'count': count})
         return [(0, 0, val) for val in info]
 
-    name = fields.Datetime('Timestamp', readonly=True)
-    pid = fields.Integer('Process ID', readonly=True,
+    name = fields.Datetime('Timestamp', readonly=True, default=fields.Datetime.now)
+    pid = fields.Integer('Process ID', readonly=True, default=_default_pid,
                           group_operator='count')
-    thread = fields.Text('Thread ID', readonly=True)
+    thread = fields.Text('Thread ID', readonly=True, default=_default_thread)
     cpu_time = fields.Float(
-        'CPU time', readonly=True,
+        'CPU time', readonly=True, default=_default_cpu_time,
         group_operator='max',
         help='CPU time consumed by the current server process')
     memory = fields.Float(
         'Memory', readonly=True,
-        group_operator='max',
+        group_operator='max', default=_default_memory,
         help='Memory consumed by the current server process')
     uid = fields.Many2one('res.users', 'User',
-                           readonly=True,
+                           readonly=True, default=_default_uid,
                            select=True)
     model = fields.Many2one('ir.model', 'Model',
                              readonly=True,
@@ -223,6 +224,7 @@ class ServerMonitorProcess(models.Model):
         'server.monitor.class.instance.count',
         'measure_id',
         'Class counts',
+        default=_class_count,
         readonly=True)
     _order = 'name DESC'
 

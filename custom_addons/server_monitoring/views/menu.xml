@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-    <menuitem groups="base.group_no_one"
-              id="server_monitoring"
+    <menuitem id="server_monitoring"
               name="Server Monitoring"
               sequence="100"/>
 
