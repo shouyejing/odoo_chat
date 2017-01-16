@@ -21,7 +21,7 @@
 
 {
     'name': 'Server Monitoring',
-    'version': '0.1',
+    'version': '8.0.1.0',
     'category': 'Tools',
     'depends': ['base',
                 ],
@@ -52,6 +52,7 @@ The logs are available through the menu Reporting -> Server Monitoring.
         'views/server_monitor_model_row_count.xml',
         'views/server_monitor_model_table_size.xml',
         'views/server_monitor_process.xml',
+        'views/res_config.xml',
         'data/ir_cron.xml',
         'security/ir.model.access.csv',
         ],

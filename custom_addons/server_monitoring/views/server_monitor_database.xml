@@ -6,7 +6,7 @@
       <field name="name">Server Monitor Database form view</field>
       <field name="model">server.monitor.database</field>
       <field name="arch" type="xml">
-        <tree string="Server Monitor" version="7.0">
+        <tree string="Server Monitor">
           <field name='name'/>
         </tree>
       </field>
@@ -16,7 +16,7 @@
       <field name="name">Server Monitor Database tree view</field>
       <field name="model">server.monitor.database</field>
       <field name="arch" type="xml">
-        <form string="Server Monitor" version="7.0">
+        <form string="Server Monitor">
           <sheet>
             <field name="name"/>
             <notebook>

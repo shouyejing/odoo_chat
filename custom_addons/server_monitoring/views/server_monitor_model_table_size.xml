@@ -5,7 +5,7 @@
       <field name="name">Server Monitor model table size search view</field>
       <field name="model">server.monitor.model.table.size</field>
       <field name="arch" type="xml">
-        <search string="Search Server Monitor Table Row Count" version="7.0">
+        <search string="Search Server Monitor Table Row Count">
           <field name="timestamp"/>
           <field name="name"/>
           <group expand="0" string="Group By...">
@@ -20,7 +20,7 @@
       <field name="name">Server Monitor model table size tree view</field>
       <field name="model">server.monitor.model.table.size</field>
       <field name="arch" type="xml">
-        <tree string="Server Monitor DB Table Row Count" version="7.0">
+        <tree string="Server Monitor DB Table Row Count">
           <field name='timestamp'/>
           <field name='name'/>
           <field name='hsize'/>

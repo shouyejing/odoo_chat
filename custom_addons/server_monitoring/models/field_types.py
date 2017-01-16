@@ -18,13 +18,17 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp import models, fields, osv
 
-from openerp.osv import orm, fields
+
+class Bigint(fields.Integer):
+    type = 'bigint'
 
 
-class bigint(fields.integer):
+class OsvBigint(osv.fields.integer):
     _type = 'int8'
 
 
-fields.bigint = bigint
-orm.FIELDS_TO_PGTYPES[bigint] = 'int8'
+fields.Bigint = Bigint
+osv.fields.bigint = OsvBigint
+models.FIELDS_TO_PGTYPES[OsvBigint] = 'int8'

@@ -5,7 +5,7 @@
       <field name="name">Server Monitor model row count search view</field>
       <field name="model">server.monitor.model.row.count</field>
       <field name="arch" type="xml">
-        <search string="Search Server Monitor Process" version="7.0">
+        <search string="Search Server Monitor Process">
           <field name="timestamp"/>
           <field name="name"/>
           <field name="count"/>
@@ -21,7 +21,7 @@
       <field name="name">Server Monitor model row count tree view</field>
       <field name="model">server.monitor.model.row.count</field>
       <field name="arch" type="xml">
-        <tree string="Server Monitor Process" version="7.0">
+        <tree string="Server Monitor Process">
           <field name='timestamp'/>
           <field name='name'/>
           <field name='count'/>
