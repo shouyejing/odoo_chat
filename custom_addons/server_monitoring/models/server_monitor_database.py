@@ -37,7 +37,7 @@ class ModelRowCount(models.Model):
                                       'Measure',
                                       ondelete='cascade',
                                       readonly=True)
-    timestamp = fields.Related(related='measure_id.name',
+    timestamp = fields.Datetime(related='measure_id.name',
                                 string='Timestamp',
                                 type='datetime',
                                 store=True)
