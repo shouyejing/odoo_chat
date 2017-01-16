@@ -19,12 +19,12 @@
 #
 ##############################################################################
 
-from openerp import models, fields
+from openerp.osv import orm, fields
 
 
-class bigint(fields.Integer):
+class bigint(fields.integer):
     _type = 'int8'
 
 
 fields.bigint = bigint
-models.FIELDS_TO_PGTYPES[bigint] = 'int8'
+orm.FIELDS_TO_PGTYPES[bigint] = 'int8'

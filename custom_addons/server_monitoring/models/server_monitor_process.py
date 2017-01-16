@@ -48,7 +48,7 @@ import datetime
 import resource
 import psutil
 
-from opener import models, fields, osv
+from openerp.osv import orm, fields, osv
 from openerp import pooler
 from openerp import SUPERUSER_ID
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
@@ -67,7 +67,7 @@ BLACKLIST = (
     )
 
 
-class ClassInstanceCount(models.Model):
+class ClassInstanceCount(orm.Model):
     _name = 'server.monitor.class.instance.count'
     _columns = {
         'name': fields.text('Class name', readonly=True),
@@ -93,7 +93,7 @@ def _monkey_patch_object_proxy_execute():
     osv.object_proxy.execute_cr = execute_cr
 
 
-class ServerMonitorProcess(models.Model):
+class ServerMonitorProcess(orm.Model):
     def __init__(self, pool, cr):
         super(ServerMonitorProcess, self).__init__(pool, cr)
         _monkey_patch_object_proxy_execute()
