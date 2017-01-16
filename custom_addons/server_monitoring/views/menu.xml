@@ -4,7 +4,6 @@
     <menuitem groups="base.group_no_one"
               id="server_monitoring"
               name="Server Monitoring"
-              parent="base.menu_reporting"
               sequence="100"/>
 
   </data>
