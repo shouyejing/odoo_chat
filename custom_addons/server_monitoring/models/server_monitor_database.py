@@ -37,10 +37,10 @@ class ModelRowCount(models.Model):
                                       'Measure',
                                       ondelete='cascade',
                                       readonly=True)
-    timestamp = fields.Related('measure_id', 'name',
-                                    string='timestamp',
-                                    type='datetime',
-                                    store=True)
+    timestamp = fields.Related(related='measure_id.name',
+                                string='Timestamp',
+                                type='datetime',
+                                store=True)
 
     _order = 'timestamp DESC, count DESC'
 
@@ -54,10 +54,9 @@ class ModelTableSize(models.Model):
     measure_id = fields.Many2one('server.monitor.database',
                                       'Measure',
                                       ondelete='cascade', readonly=True)
-    timestamp = fields.Related('measure_id', 'name',
-                                    string='timestamp',
-                                    type='datetime',
-                                    store=True)
+    timestamp = fields.Datetime(related='measure_id.name',
+                                string='Timestamp',
+                                store=True)
     _order = 'timestamp DESC, size DESC'
 
 
@@ -71,10 +70,9 @@ class ModelTableActivityRead(models.Model):
     measure_id = fields.Many2one('server.monitor.database',
                                       'Measure',
                                       ondelete='cascade', readonly=True)
-    timestamp = fields.Related('measure_id', 'name',
-                                    string='timestamp',
-                                    type='datetime',
-                                    store=True)
+    timestamp = fields.Datetime(related='measure_id.name',
+                                string='Timestamp',
+                                store=True)
     _order = 'timestamp DESC, total_reads DESC'
 
 
@@ -92,10 +90,9 @@ class ModelTableActivityUpdate(models.Model):
                                       'Measure',
                                       ondelete='cascade',
                                       readonly=True)
-    timestamp = fields.Related('measure_id', 'name',
-                                    string='timestamp',
-                                    type='datetime',
-                                    store=True)
+    timestamp = fields.Datetime(related='measure_id.name',
+                                string='Timestamp',
+                                store=True)
     _order = 'timestamp DESC, num_update DESC'
 
 
