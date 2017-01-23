@@ -5,7 +5,7 @@ import json
 
 from openerp import SUPERUSER_ID
 from openerp import http
-import time
+from datetime import datetime, timedelta
 from openerp.http import request
 import base64
 from openerp.addons.website_blog.controllers.main import WebsiteBlog
@@ -59,13 +59,19 @@ class website_vote(http.Controller):
     ], type='http', auth="user", methods=['POST'], website=True)
     def vote_submit(self, **kwargs):
         cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
-        vote = pool.get('vote').search(cr, uid, [('user_id', '=', uid), ('blog_post_id', '=', int(kwargs.get('blog_post_id')))])
-        date_from = '2017/01/24 08:30:00'
+        date_from = '2017/01/23 08:30:00'
         date_to = '2017/01/25 08:30:00'
-        date_now = time.strftime("%Y/%m/%d %H:%M:%S")
+        date_now = (datetime.now() + timedelta(hours=7)).strftime("%Y/%m/%d %H:%M:%S")
+        print date_from
+        print date_to
+        print date_now
         if date_from < date_now < date_to:
-            if not vote:
-                if kwargs.get('blog_post_id'):
+            print 'thoa man date'
+            if kwargs.get('blog_post_id'):
+                vote = pool.get('vote').search(cr, uid, [('user_id', '=', uid),
+                                                         ('blog_post_id', '=', int(kwargs.get('blog_post_id')))])
+                if not vote:
+                    print 'thoa man vote'
                     vote_id = pool.get('vote').create(cr, uid, {'user_id': uid, 'blog_post_id': kwargs.get('blog_post_id')})
         if request.httprequest and request.httprequest.headers.environ.get('HTTP_REFERER'):
             url = request.httprequest.headers.environ.get('HTTP_REFERER')
