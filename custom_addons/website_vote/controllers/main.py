@@ -59,7 +59,7 @@ class website_vote(http.Controller):
     ], type='http', auth="user", methods=['POST'], website=True)
     def vote_submit(self, **kwargs):
         cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
-        date_from = '2017/01/23 08:30:00'
+        date_from = '2017/01/24 08:30:00'
         date_to = '2017/01/25 08:30:00'
         date_now = (datetime.now() + timedelta(hours=7)).strftime("%Y/%m/%d %H:%M:%S")
         print date_from
