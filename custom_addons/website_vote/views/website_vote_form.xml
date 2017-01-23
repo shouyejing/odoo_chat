@@ -52,11 +52,11 @@
 
         <template id="website_vote_list" inherit_id="website_blog.blog_post_complete">
             <xpath expr="//div[@id='blog_content']" position="after">
-                <form action="/vote-submit/" method="post" class="s_website_form form-horizontal container-fluid mt32" enctype="multipart/form-data">
+                <form action="/vote-submit/" method="post" class="s_website_form form-horizontal container-fluid mt32" enctype="multipart/form-data">;
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <input name="blog_post_id" type="hidden" t-att-value="blog_post.id"/>
                     <div>
-                        <button type="submit" class="fa fa-thumbs-up fa-2x" style="width: auto; height: 40px; color: white; background: red;">Vote: <t t-esc="vote_count" /></button>
+                        <button type="submit" class="fa fa-thumbs-up fa-2x" style="width: auto; height: 40px; color: white; background: red; margin-bottom: 40px;">Vote: <t t-esc="vote_count" /></button>
                     </div>
                 </form>
             </xpath>
