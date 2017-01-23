@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+        <record model="ir.ui.view" id="view_blog_post_list_inherit">
+            <field name="name">blog.post.list.inherit</field>
+            <field name="model">blog.post</field>
+            <field name="inherit_id" ref="website_blog.view_blog_post_list" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='create_uid']" position="after">
+                    <field name='author_email'/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_blog_post_form_inherit">
+            <field name="name">blog.post.form.inherit</field>
+            <field name="model">blog.post</field>
+            <field name="inherit_id" ref="website_blog.view_blog_post_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='visits']" position="before">
+                    <field name='author_email'/>
+                </xpath>
+            </field>
+        </record>
+
+
         <template id="website_vote" name="Vote">
             <t t-call="website.layout">
                 <div id="wrap">
