@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 from openerp.http import request
 import base64
 from openerp.addons.website_blog.controllers.main import WebsiteBlog
+from openerp.osv.orm import browse_record
+from openerp.addons.website.models.website import slug, unslug
 
 PPG = 20 # Products Per Page
 PPR = 4  # Products Per Row
@@ -97,6 +99,7 @@ class website_vote(http.Controller):
             values.append(data)
         list_blog = {
             'list_blog': values,
+            'blog_url': QueryURL('', ['blog', 'tag'])
         }
         return request.website.render("website_vote.website_vote_form", list_blog)
 
