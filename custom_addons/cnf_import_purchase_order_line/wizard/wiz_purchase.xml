@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- view to import po using excel -->
+        <record id="view_import_purchase_orders" model="ir.ui.view">
+            <field name="name">Import purchase order lines</field>
+            <field name="model">wiz.import.purchase.order</field>
+            <field name="arch" type="xml">
+                <form string="Import Purchase Order Lines" >
+                    <header>
+                        <field name="state" widget="statusbar"  readonly="1"/>
+                    </header>
+                    <group string="Choose Excel">
+                        <field name="name" filename='filename' required="1"/>
+                        <field name="filename" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button name="create_purchase_orders" string="Import" type="object" class="oe_highlight"/>
+                        OR
+                          <button string="Cancel" class="oe_link" special="cancel" type="object" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_import_po_wizard" model="ir.actions.act_window">
+            <field name="name">Import Purchase order lines</field>
+            <field name="res_model">wiz.import.purchase.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_import_purchase_orders"/>
+            <field name="target">new</field>
+        </record>
+
+        <act_window name="Import Purchase orders"
+            res_model="wiz.import.purchase.order"
+            src_model="purchase.order"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            id="action_view_import_po_wizard"
+            view_id="view_import_purchase_orders"
+        />
+
+        <data noupdate="1">
+            <record model="ir.config_parameter" id="po_import_file_path">
+                <field name="key">import_po_line_file_path</field>
+                <field name="value">patch_to_save_file_upload</field>
+                <field name="group_ids" eval="[(4, ref('base.group_system'))]" />
+            </record>
+        </data>
+
+    </data>
+</openerp>

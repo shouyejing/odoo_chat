@@ -31,9 +31,10 @@ odoo.define('cnf_point_of_sale.screen', function (require) {
             //     this.lock_screen(false);
             // }
             // call print immediate
+            setTimeout(function(){
+                this.$('.next').click();
+            }, 10);
             this.print();
-            this.$('.next').click();
-
         },
         print: function() {
             var self = this;
