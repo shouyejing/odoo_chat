@@ -5,6 +5,7 @@ import base64
 import tempfile
 from openerp import models, fields, api
 from openerp.tools.translate import _
+from openerp.exceptions import Warning
 
 
 class WizardImport(models.TransientModel):
@@ -43,13 +44,11 @@ class WizardImport(models.TransientModel):
             x = base64.b64decode(self.name)
             f.write(x)
         wb = xlrd.open_workbook(filename)
-        lst = []
-        view_ref = self.pool.get('ir.model.data').get_object_reference(self.env.cr, self.env.uid, 'sale',
-                                                                       'view_order_form')
-        view_id = view_ref and view_ref[1] or False
 
-        # search_view_ref = self.pool.get('ir.model.data').get_object_reference(self.env.cr,self.env.uid, 'purchase', 'view_purchase_order_filter')
-        # search_view_id = search_view_ref and search_view_ref[1] or False
+        # view_ref = self.pool.get('ir.model.data').get_object_reference(self.env.cr, self.env.uid, 'sale',
+        #                                                                'view_order_form')
+        # view_id = view_ref and view_ref[1] or False
+        active_id = self.env.context.get('active_id')
         for s in wb.sheets():
             product_id = False
             product_qty = 0.0
@@ -63,16 +62,18 @@ class WizardImport(models.TransientModel):
 
                 if product:
                     product_id = product_product.search([('name_template', '=', product)])
+                if not product_id:
+                    raise Warning(_('Cannot find product: ') + str(product))
                 # if product_uom:
                 #     uom_id = product_uom
                 # result = self._make_draft_purchase_order(partner_id, eff_dt, location_id,
                 #                                   plan_dt, invoice_method, company_id)
-                active_id = self.env.context.get('active_id')
+
                 so = sale_order.browse(active_id)
                 order_line = self._prepare_order_line(product_id, product_qty, price_unit, so.id)
 
-                id = sale_order_line.create(order_line)
-
+                record = sale_order_line.create(order_line)
+                record.product_id_change()
         return {
             'type': 'ir.actions.act_window',
             'name': _('Sales Orders'),
