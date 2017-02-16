@@ -1,18 +1,18 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 {
-    "name": "Sale Line Import",
-    "version": "8.0.0.1.6",
+    "name": "Stock Request Detail Import",
+    "version": "9.0.1",
     "author": "Canifa.com",
     "category": "Sale",
     "website": "http://www.canifa.com",
     "license": "",
     "depends": [
-        "sale"
+        "canifa_module"
     ],
     "demo": [],
     "data": [
-        "wizard/sale_line_import_view.xml"
+        "wizard/stock_request_detail_import_view.xml"
     ],
     "test": [],
     "js": [],

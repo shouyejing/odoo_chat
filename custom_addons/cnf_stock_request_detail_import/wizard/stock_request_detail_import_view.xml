@@ -1,21 +1,17 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <openerp>
     <data>
-    
-        <record id="view_sale_line_import" model="ir.ui.view">
-            <field name="name">Import Lines</field>
-            <field name="model">wizard.import</field>
+        <record id="stock_request_detail_import_wizard" model="ir.ui.view">
+            <field name="name">Import Detail</field>
+            <field name="model">import.stock.request.detail.wizard</field>
             <field name="arch" type="xml">
-               <form string="Import Order Lines" >
-                    <header>
-                        <field name="state" widget="statusbar"  readonly="1"/>
-                    </header>
+               <form string="Import Stock Request Detail">
                     <group string="Choose Excel">
                         <field name="name" filename='filename' required="1"/>
                         <field name="filename" invisible="1"/>
                     </group>
                     <footer>
-                        <button name="create_sale_order_line" string="Import" type="object" class="oe_highlight"/>
+                        <button name="create_stock_request_detail" string="Import" type="object" class="oe_highlight"/>
                         OR
                           <button string="Cancel" class="oe_link" special="cancel" type="object" />
                     </footer>
@@ -23,25 +19,23 @@
             </field>
         </record>
 
-        <record id="action_sale_line_import" model="ir.actions.act_window">
+        <record id="action_stock_request_detail_import" model="ir.actions.act_window">
             <field name="name">Import Lines</field>
-            <field name="res_model">wizard.import</field>
+            <field name="res_model">import.stock.request.detail.wizard</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="view_sale_line_import"/>
+            <field name="view_id" ref="stock_request_detail_import_wizard"/>
             <field name="target">new</field>
         </record>
 
-        <act_window name="Import Lines" res_model="wizard.import" src_model="sale.order" view_mode="form" target="new" key2="client_action_multi" id="action_sale_line_import"/>
-
+        <act_window name="Import Detail" res_model="import.stock.request.detail.wizard" src_model="stock.request" view_mode="form" target="new" key2="client_action_multi" id="action_stock_request_detail_import"/>
 
         <data noupdate="1">
-            <record model="ir.config_parameter" id="so_import_file_path">
-                <field name="key">import_so_line_file_path</field>
+            <record model="ir.config_parameter" id="stock_request_detail_import_file_path">
+                <field name="key">import_stock_request_detail_path</field>
                 <field name="value">patch_to_save_file_upload</field>
                 <field name="group_ids" eval="[(4, ref('base.group_system'))]" />
             </record>
         </data>
-
     </data>
 </openerp>

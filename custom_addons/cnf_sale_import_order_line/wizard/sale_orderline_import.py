@@ -1,5 +1,4 @@
-# coding: utf-8
-
+# -*- coding: utf-8 -*-
 import xlrd
 import base64
 import tempfile
@@ -8,14 +7,13 @@ from openerp.tools.translate import _
 from openerp.exceptions import Warning
 
 
-class WizardImport(models.TransientModel):
-    _name = 'wizard.import'
+class SaleOrderLineImport(models.TransientModel):
+    _name = 'import.sale.order.line.wizard'
 
     name = fields.Binary(string='Import Excel')
     state = fields.Selection([('init', 'init'), ('done', 'done')],
                              string='state', readonly=True, default='init')
     filename = fields.Char('Filename')
-
 
     @api.multi
     def _prepare_order_line(self, product, qty, price_unit, order_id):
@@ -38,11 +36,11 @@ class WizardImport(models.TransientModel):
         sale_order = self.env['sale.order']
         sale_order_line = self.env['sale.order.line']
         filepath = self.env['ir.config_parameter'].get_param('import_so_line_file_path')
-        f = tempfile.NamedTemporaryFile(mode='wb+', delete=False)
+        file_object = tempfile.NamedTemporaryFile(mode='wb+', delete=False)
         filename = filepath + str(self.filename)
-        with open(filename, 'wb') as f:
-            x = base64.b64decode(self.name)
-            f.write(x)
+        with open(filename, 'wb') as file_object:
+            data = base64.b64decode(self.name)
+            file_object.write(data)
         wb = xlrd.open_workbook(filename)
 
         # view_ref = self.pool.get('ir.model.data').get_object_reference(self.env.cr, self.env.uid, 'sale',
@@ -62,6 +60,8 @@ class WizardImport(models.TransientModel):
 
                 if product:
                     product_id = product_product.search([('name_template', '=', product)])
+                else:
+                    raise Warning(_('Please input product in line: ') + str(row + 1))
                 if not product_id:
                     raise Warning(_('Cannot find product: ') + str(product))
                 # if product_uom:

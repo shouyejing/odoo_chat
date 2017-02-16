@@ -1,12 +1,12 @@
-from openerp import models,fields,api
-from openerp.tools.translate import _
+# -*- coding: utf-8 -*-
 import xlrd
 import base64
-import time
 import tempfile
+import time
+from openerp import models, fields, api
+from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 from openerp.exceptions import Warning
-import datetime
 
 
 # class purchase_inherit(models.Model):
@@ -42,8 +42,8 @@ import datetime
 #         return res
 
 
-class wiz_import_purchase_order(models.TransientModel):
-    _name = 'wiz.import.purchase.order'
+class UploadPurchaseOrderLineWizard(models.TransientModel):
+    _name = 'import.purchase.order.line.wizard'
     _description = 'Importer Purchase Orders'
     
     name = fields.Binary(string='Import Excel')
@@ -86,22 +86,22 @@ class wiz_import_purchase_order(models.TransientModel):
                   'product_qty': product_qty or 0.0,
                   'state': 'draft',
                   'name': product_id.product_tmpl_id.description or product_id.name_template,
-                  }
+            }
 
         return vals
 
     @api.multi
-    def create_purchase_orders(self):
+    def create_purchase_order_lines(self):
         product_product = self.env['product.product']
         # product_uom = self.env['product.uom']
         purchase_order = self.env['purchase.order']
         purchase_order_line = self.env['purchase.order.line']
-        filepath = self.env['ir.config_parameter'].get_param('import_po_line_file_path')
-        f = tempfile.NamedTemporaryFile(mode='wb+', delete=False)
-        filename = filepath + str(self.filename)
-        with open(filename, 'wb') as f:
-            x = base64.b64decode(self.name)
-            f.write(x)
+        file_path = self.env['ir.config_parameter'].get_param('import_po_line_file_path')
+        file_object = tempfile.NamedTemporaryFile(mode='wb+', delete=False)
+        filename = file_path + str(self.filename)
+        with open(filename, 'wb') as file_object:
+            data = base64.b64decode(self.name)
+            file_object.write(data)
         wb = xlrd.open_workbook(filename)
         # view_ref = self.pool.get('ir.model.data').get_object_reference(self.env.cr,self.env.uid, 'purchase', 'purchase_order_form')
         # view_id = view_ref and view_ref[1] or False
@@ -123,14 +123,16 @@ class wiz_import_purchase_order(models.TransientModel):
                 if date_plan:
                     try:
                         if date_plan:
-                            serial1 = str(date_plan)
-                            # dt1=str(planned_date).replace('/','-')
-                            dj_date = datetime.datetime.strptime(serial1, '%d/%m/%Y %H:%M:%S')
-                            date_plan = dj_date.strftime('%Y/%m/%d %H:%M:%S')
+                            date_obj = time.strptime(date_plan, "%d/%m/%Y %H:%M:%S")
+                            mk_time = time.mktime(date_obj)
+                            gm_time = time.gmtime(mk_time)
+                            date_plan = time.strftime("%Y-%m-%d %H:%M:%S", gm_time)  # convert to utc
                     except:
                         pass
                 if product:
                     product_id = product_product.search([('name_template', '=', product)])
+                else:
+                    raise Warning(_('Please input product in line: ') + str(row + 1))
                 if not product_id:
                     raise Warning(_('Cannot find product: ') + str(product))
                 # if product_uom:
@@ -156,9 +158,9 @@ class wiz_import_purchase_order(models.TransientModel):
             'res_id': active_id,
             'view_type': 'form',
             'view_mode': 'form',
-            # 'views': [(False, 'list'), (False, 'kanban'), (view_id, 'form'), (False, 'pivot'), (False, 'graph'), (False, 'calendar')],
             'target': 'current',
             'nodestroy': True,
+            # 'views': [(False, 'list'), (False, 'kanban'), (view_id, 'form'), (False, 'pivot'), (False, 'graph'), (False, 'calendar')],
             # 'search_view_id': search_view_id,
             # 'context': self.env.context,
         }
