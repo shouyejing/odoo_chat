@@ -81,27 +81,43 @@ class website_vote(http.Controller):
             url = '/blog/'
         return request.redirect(url)
 
+    # @http.route([
+    #     '/top-vote/',
+    # ], type='http', auth="public", website=True)
+    # def top_vote(self):
+    #     cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
+    #     cr.execute("""select count(*) as top, blog_post_id from vote group by blog_post_id order by top desc""")
+    #     top_vote = cr.fetchall()
+    #     values = []
+    #     for vote in top_vote:
+    #         if vote[0]:
+    #             blog_post = pool.get('blog.post').browse(cr, uid, vote[1])
+    #             data = {
+    #                 'blog_post': blog_post,
+    #                 'vote': vote[0],
+    #             }
+    #         values.append(data)
+    #     list_blog = {
+    #         'list_blog': values,
+    #         'blog_url': QueryURL('', ['blog', 'tag'])
+    #     }
+    #     return request.website.render("website_vote.website_vote_form", list_blog)
+
     @http.route([
         '/top-vote/',
     ], type='http', auth="public", website=True)
     def top_vote(self):
         cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
-        cr.execute("""select count(*) as top, blog_post_id from vote group by blog_post_id order by top desc""")
-        top_vote = cr.fetchall()
-        values = []
-        for vote in top_vote:
-            if vote[0]:
-                blog_post = pool.get('blog.post').browse(cr, uid, vote[1])
-                data = {
-                    'blog_post': blog_post,
-                    'vote': vote[0],
-                }
-            values.append(data)
+
+        blog_post_ids = pool.get('blog.post').search(cr, uid, [])
+
+        blog_post = pool.get('blog.post').browse(cr, uid, blog_post_ids)
+
         list_blog = {
-            'list_blog': values,
-            'blog_url': QueryURL('', ['blog', 'tag'])
+            'list_blog': blog_post,
         }
-        return request.website.render("website_vote.website_vote_form", list_blog)
+        return request.website.render("website_vote.website_vote_form",
+                                      list_blog)
 
 
     # @http.route([
