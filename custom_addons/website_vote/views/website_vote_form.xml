@@ -52,29 +52,59 @@
             </t>
 		</template>
 
-        <!--<template id="website_vote_form" name="Website vote" inherit_id="website_vote">-->
-            <!--<xpath expr="//div[@name='mail_button']" position="replace">-->
-                <!--<div>-->
-                    <!--<table style="border: 1px solid; border-color: red">-->
-                        <!--<th style="width: 80px; border: 1px solid; border-color: red; padding: 10px">Mã số</th>-->
-                        <!--<th style="width: 600px; border: 1px solid; border-color: red; padding: 10px">Tiêu đề</th>-->
-                        <!--<th style="border: 1px solid; border-color: red; padding: 10px">Lượng vote</th>-->
-                        <!--<t t-foreach="list_blog" t-as="post">-->
-                            <!--<tr style="border: 1px solid; border-color: red">-->
-                                <!--<td style="border: 1px solid; border-color: red; padding: 10px"><t t-esc="post['blog_post'].subtitle"/> </td>-->
-                                <!--<td style="border: 1px solid; border-color: red; padding: 10px">-->
-                                    <!--&lt;!&ndash;<a t-attf-href="#{blog_url('', ['blog', 'post'], blog=post['blog_post'].id, post=post['blog_post'])}" t-field="post['blog_post'].name"></a>&ndash;&gt;-->
-                                    <!--<a t-attf-href="/blog/#{ slug(post['blog_post'].blog_id) }/post/#{ slug(post['blog_post']) }">-->
-                                        <!--<t t-esc="post['blog_post'].name"/>-->
-                                    <!--</a>-->
-                                <!--</td>-->
-                                <!--<td style="border: 1px solid; border-color: red; padding: 10px"><t t-esc="post['vote']"/> </td>-->
-                            <!--</tr>-->
-                        <!--</t>-->
-                    <!--</table>-->
-                <!--</div>-->
-            <!--</xpath>-->
-        <!--</template>-->
+        <template id="website_vote_result" name="Vote">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure"/>
+                    <div class="container">
+                        <h4 style="color: red; font-weight: bold;">THỐNG KÊ CUỘC THI "CHIA SẺ KHOẢNH KHẮC CÙNG CANIFA MẶC ĐẸP ĐÓN TẾT"</h4>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <!--<div class="oe_structure">-->
+                                    <!--<div>-->
+                                        <!--<p>Contact us about anything related to our company or services.</p>-->
+                                        <!--<p>We'll do our best to get back to you as soon as possible.</p>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <div class="text-center mt64" name="mail_button">
+                                    <a t-attf-href="mailto:{{ res_company.email }}" class="btn btn-primary">Send us an email</a>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb32">
+                                <t t-call="website.company_description"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oe_structure"/>
+                  </div>
+            </t>
+		</template>
+
+        <template id="website_vote_result_form" name="Website vote" inherit_id="website_vote_result">
+            <xpath expr="//div[@name='mail_button']" position="replace">
+                <div>
+                    <table style="border: 1px solid; border-color: red">
+                        <th style="width: 60px; border: 1px solid; border-color: red; padding: 10px">Số TT</th>
+                        <th style="width: 80px; border: 1px solid; border-color: red; padding: 10px">Mã số</th>
+                        <th style="width: 600px; border: 1px solid; border-color: red; padding: 10px">Tiêu đề</th>
+                        <th style="border: 1px solid; border-color: red; padding: 10px">Lượng vote</th>
+                        <t t-foreach="list_blog" t-as="post">
+                            <tr style="border: 1px solid; border-color: red">
+                                <td style="border: 1px solid; border-color: red; padding: 10px"><t t-esc="post_index + 1"/> </td>
+                                <td style="border: 1px solid; border-color: red; padding: 10px"><t t-esc="post['blog_post'].subtitle"/> </td>
+                                <td style="border: 1px solid; border-color: red; padding: 10px">
+                                    <!--<a t-attf-href="#{blog_url('', ['blog', 'post'], blog=post['blog_post'].id, post=post['blog_post'])}" t-field="post['blog_post'].name"></a>-->
+                                    <a t-attf-href="/blog/#{ slug(post['blog_post'].blog_id) }/post/#{ slug(post['blog_post']) }">
+                                        <t t-esc="post['blog_post'].name"/>
+                                    </a>
+                                </td>
+                                <td style="border: 1px solid; border-color: red; padding: 10px"><t t-esc="post['vote']"/> </td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </xpath>
+        </template>
 
         <template id="website_vote_form" name="Website vote" inherit_id="website_vote">
             <xpath expr="//div[@name='mail_button']" position="replace">
